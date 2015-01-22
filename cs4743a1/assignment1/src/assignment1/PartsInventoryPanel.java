@@ -1,0 +1,20 @@
+package assignment1;
+
+import java.awt.Color;
+
+import javax.swing.JPanel;
+
+@SuppressWarnings("serial")
+public class PartsInventoryPanel extends JPanel {
+	
+	PartsInventoryModel model;
+	PartsInventoryView view;
+	
+	public PartsInventoryPanel(PartsInventoryModel model, PartsInventoryView view) {
+		super();
+		this.setSize(400, 300);
+		this.setBackground(Color.white);
+		this.setVisible(true);
+		this.setFocusable(true);
+	}
+}
