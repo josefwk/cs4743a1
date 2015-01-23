@@ -63,9 +63,30 @@ public class PartsInventoryModel {
 		}
 	}
 	
+	public void editPart(Part partOld, Part partNew) throws Exception {
+		int index = partsInventory.indexOf(partOld);
+		if (index == -1) {
+			throw new Exception("Error: the old part, " + partOld.getPartName() + " cannot be edited as it is not listed in inventory.");
+		}
+		else {
+			partsInventory.set(index, partNew);
+		}
+	}
+	
+	public void editPart(Part partOld, int newQuantity, String newName, String newPartNumber, String newVendor) throws Exception {
+		int index = partsInventory.indexOf(partOld);
+		if (index == -1) {
+			throw new Exception("Error: the old part, " + partOld.getPartName() + " cannot be edited as it is not listed in inventory.");
+		}
+		else {
+			Part newPart = new Part(newQuantity, newName, newPartNumber, newVendor);
+			partsInventory.set(index, newPart);
+		}
+	}
+	
 	public Part findPartName(String partName) {
 		if (partName.length() > Part.getMaxPartNameLength()) {
-			partName = partName.substring(0, Part.getMaxPartNameLength()); // could just throw length exceeded exception...
+			partName = partName.substring(0, Part.getMaxPartNameLength()); // maybe just throw length exceeded exception...
 		}
 		for (Part part : partsInventory) { // this is O(n)
 			if (part.getPartName().equals(partName)) {

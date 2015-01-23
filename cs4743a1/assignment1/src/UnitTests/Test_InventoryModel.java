@@ -27,7 +27,7 @@ public class Test_InventoryModel {
 	}
 	
 	@Test
-	public void testInventoryModel_addPartAsObject() {
+	public void testInventoryModel_AddPartAsObject() {
 		try {
 			p = new Part(quantity, partName, partNumber);
 			pim.addPart(p);
@@ -43,7 +43,7 @@ public class Test_InventoryModel {
 	}
 	
 	@Test (expected = Exception.class)
-	public void testInventoryModel_addPartAsNullObject() throws Exception {
+	public void testInventoryModel_AddPartAsNullObject() throws Exception {
 		try {
 			p = null;
 			pim.addPart(p);
@@ -58,7 +58,7 @@ public class Test_InventoryModel {
 	}
 	
 	@Test
-	public void testInventoryModel_addPart() {
+	public void testInventoryModel_AddPart() {
 		try {
 			pim.addPart(quantity, partName, partNumber, vendor);
 			assertTrue(pim.getSize() == 1);
@@ -72,7 +72,7 @@ public class Test_InventoryModel {
 	}
 	
 	@Test (expected = IOException.class)
-	public void testInventoryModel_addPartWithNegativeQuantity() throws IOException {
+	public void testInventoryModel_AddPartWithNegativeQuantity() throws IOException {
 		try {
 			pim.addPart(-1, partName, partNumber, vendor);
 			fail("Should have thrown an exception: Part with negative quantity was added.");
@@ -86,7 +86,7 @@ public class Test_InventoryModel {
 	}
 	
 	@Test (expected = IOException.class)
-	public void testInventoryModel_addPartWithZeroQuantity() throws IOException {
+	public void testInventoryModel_AddPartWithZeroQuantity() throws IOException {
 		try {
 			pim.addPart(-1, partName, partNumber, vendor);
 			fail("Should have thrown an IOException: Part with zero quantity was added.");
@@ -101,7 +101,7 @@ public class Test_InventoryModel {
 	
 	// To test exception chaining from the Part class through the PartsInventoryModel class
 	@Test (expected = IOException.class)
-	public void testInventoryModel_addPartWithPartNumberExceedingMaxLength() throws IOException {
+	public void testInventoryModel_AddPartWithPartNumberExceedingMaxLength() throws IOException {
 		String longPartNumber = "";
 		for (int i = 0; i < Part.getMaxPartNumberLength(); i++) {
 			longPartNumber = longPartNumber + "A"; // add one letter to the string
@@ -119,7 +119,7 @@ public class Test_InventoryModel {
 	}
 	
 	@Test (expected = Exception.class)
-	public void testInventoryModel_addPartWithDuplicateName() throws Exception {
+	public void testInventoryModel_AddPartWithDuplicateName() throws Exception {
 		try {
 			pim.addPart(quantity, partName, partNumber, vendor);
 			assertTrue(pim.getSize() == 1);
@@ -197,6 +197,47 @@ public class Test_InventoryModel {
 			assertTrue(pim.getSize() == 0);
 			pim.deletePart(partName);
 			assertTrue(pim.getSize() == 0);
+		}
+		catch (IOException e) {
+			fail("IOException thrown during unexceptional part creation: \n\t" + e);
+		}
+		catch (Exception e) {
+			fail("Exception thrown during unexceptional part creation: \n\t" + e);
+		}	
+	}
+	
+	@Test
+	public void testInventoryModel_EditPartWithObjectReference() {
+		try {
+			Part partOriginal = null;
+			pim.addPart(quantity, partName, partNumber, vendor);
+			assertTrue(pim.getSize() == 1);
+			assertTrue((partOriginal = pim.findPartName(partName)) != null); // should find a valid Part object
+			Part partReplace = new Part(42, "ThisNewPartName", partNumber, "DifferentVendor");
+			pim.editPart(partOriginal, partReplace);
+			assertTrue(pim.findPartName(partName) == null); // should not find the old Part name
+			assertTrue(pim.findPartName("ThisNewPartName") != null); // should find the new Part name
+			assertTrue(pim.getSize() == 1);
+		}
+		catch (IOException e) {
+			fail("IOException thrown during unexceptional part creation: \n\t" + e);
+		}
+		catch (Exception e) {
+			fail("Exception thrown during unexceptional part creation: \n\t" + e);
+		}	
+	}
+	
+	@Test
+	public void testInventoryModel_EditPartWithParameters() {
+		try {
+			Part partOriginal = null;
+			pim.addPart(quantity, partName, partNumber, vendor);
+			assertTrue(pim.getSize() == 1);
+			assertTrue((partOriginal = pim.findPartName(partName)) != null); // should find a valid Part object
+			pim.editPart(partOriginal, 42, "ThisNewPartName", partNumber, "DifferentVendor");
+			assertTrue(pim.findPartName(partName) == null); // should not find the old Part name
+			assertTrue(pim.findPartName("ThisNewPartName") != null); // should find the new Part name
+			assertTrue(pim.getSize() == 1);
 		}
 		catch (IOException e) {
 			fail("IOException thrown during unexceptional part creation: \n\t" + e);
