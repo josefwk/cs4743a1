@@ -118,6 +118,23 @@ public class Test_InventoryModel {
 		}	
 	}
 	
+	@Test (expected = Exception.class)
+	public void testInventoryModel_addPartWithDuplicateName() throws Exception {
+		try {
+			pim.addPart(quantity, partName, partNumber, vendor);
+			assertTrue(pim.getSize() == 1);
+			pim.addPart(quantity, partName, partNumber, vendor);
+			fail("Should have thrown an exception: attempted to add Part with duplicate name.");
+		}
+		catch (IOException e) {
+			fail("Should have thrown an Exception, not an IOException: attempted to add Part with duplicate name.");
+		}
+		catch (Exception e) {
+			throw new Exception(e);
+		}	
+	}
+	
+	
 	@Test
 	public void testInventoryModel_AddOneThousandUniqueParts() {
 		try {
@@ -127,6 +144,59 @@ public class Test_InventoryModel {
 			assertTrue(pim.getSize() == 1000);
 			assertTrue(pim.findPartName(partName + "_" + 500) != null); // should find a valid Part object
 			assertTrue(pim.findPartName("NoSuch" + "_" + 500) == null); // should not find a partName that was not added
+		}
+		catch (IOException e) {
+			fail("IOException thrown during unexceptional part creation: \n\t" + e);
+		}
+		catch (Exception e) {
+			fail("Exception thrown during unexceptional part creation: \n\t" + e);
+		}	
+	}
+	
+	@Test
+	public void testInventoryModel_DeletePartByObjectReference() {
+		try {
+			Part p = null;
+			pim.addPart(quantity, partName, partNumber, vendor);
+			assertTrue(pim.getSize() == 1);
+			assertTrue((p = pim.findPartName(partName)) != null); // should find a valid Part object
+			pim.deletePart(p);
+			assertTrue(pim.getSize() == 0);
+		}
+		catch (IOException e) {
+			fail("IOException thrown during unexceptional part creation: \n\t" + e);
+		}
+		catch (Exception e) {
+			fail("Exception thrown during unexceptional part creation: \n\t" + e);
+		}	
+	}
+	
+	@Test
+	public void testInventoryModel_DeletePartByPartName() {
+		try {
+			pim.addPart(quantity, partName, partNumber, vendor);
+			assertTrue(pim.getSize() == 1);
+			assertTrue(pim.findPartName(partName) != null); // should find a valid Part object
+			pim.deletePart(partName);
+			assertTrue(pim.getSize() == 0);
+		}
+		catch (IOException e) {
+			fail("IOException thrown during unexceptional part creation: \n\t" + e);
+		}
+		catch (Exception e) {
+			fail("Exception thrown during unexceptional part creation: \n\t" + e);
+		}	
+	}
+	
+	@Test
+	public void testInventoryModel_DeleteNonExistentPart() {
+		try {
+			Part p = new Part(quantity, partName, partNumber, vendor);
+			assertTrue(pim.getSize() == 0);
+			pim.deletePart(p);
+			assertTrue(pim.getSize() == 0);
+			pim.deletePart(partName);
+			assertTrue(pim.getSize() == 0);
 		}
 		catch (IOException e) {
 			fail("IOException thrown during unexceptional part creation: \n\t" + e);

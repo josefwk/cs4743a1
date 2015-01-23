@@ -52,9 +52,20 @@ public class PartsInventoryModel {
 		}
 	}
 	
+	public void deletePart(Part p) {
+		partsInventory.remove(p); // if it exists, first instance (unique, only one entry) is removed. otherwise does nothing
+	}
+	
+	public void deletePart(String partName) {
+		Part p = findPartName(partName);
+		if (p != null) {
+			partsInventory.remove(p); // if it exists, first instance (unique, only one entry) is removed. otherwise does nothing
+		}
+	}
+	
 	public Part findPartName(String partName) {
 		if (partName.length() > Part.getMaxPartNameLength()) {
-			partName = partName.substring(0, Part.getMaxPartNameLength());
+			partName = partName.substring(0, Part.getMaxPartNameLength()); // could just throw length exceeded exception...
 		}
 		for (Part part : partsInventory) { // this is O(n)
 			if (part.getPartName().equals(partName)) {
@@ -76,7 +87,7 @@ public class PartsInventoryModel {
 		return null;
 	}
 	
-	public void printInventory() {
+	public void printInventory() { // for debugging, console, or file output
 		String horizontalSeparator = "";
 		int recordNum = 1;
 		for (int i = 0; i < 80; i++) {
