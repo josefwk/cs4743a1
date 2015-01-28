@@ -9,10 +9,13 @@ public class PartsInventoryController implements ActionListener {
 	private PartsInventoryView inventoryView;
 	private PartView partView;
 	private List<Part> partsInventory;
+	private Part part;
+	private boolean passesRequirements;
 	
 		public PartsInventoryController(PartsInventoryView inventoryView) {
 			this.inventoryView = inventoryView;
-			partsInventoryModel = new PartsInventoryModel();	
+			partsInventoryModel = new PartsInventoryModel();
+			passesRequirements = true;
 		}
 
 		@Override
@@ -38,11 +41,35 @@ public class PartsInventoryController implements ActionListener {
 					break;
 				case "OK":
 					try {
-						partsInventoryModel.addPart(partView.getQuantity(), partView.getName(), partView.getNumber(), partView.getVendor());
+						if (passesRequirements == true) {
+							if (partView.getNumber().length() > 20) {
+								System.out.println("Number length exceeds maximum. Must be 20 characters or less. Try again.");
+								passesRequirements = false;
+							}	
+							if (partView.getName().length() > 255) {
+								System.out.println("Name length exceeds maximum. Must be 255 characters or less. Try again.");
+								passesRequirements = false;
+							}
+							if (partView.getVendor().length() > 255) {
+								System.out.println("Vendor length exceeds maximum. Must be 255 characters or less. Try again.");
+								passesRequirements = false;
+							}
+							if (partView.getQuantity().intValue() < 1) {
+								System.out.println("Quantity is less than 1. Must be greater than 0. Try again.");
+								passesRequirements = false;
+							}
+							if (passesRequirements == false)
+								partView.dispose();
+						} 
+						if (passesRequirements == true) {
+							part = new Part(partView.getQuantity(), partView.getName(), partView.getNumber(), partView.getVendor());		
+							partsInventoryModel.addPart(part);
+							partView.dispose();
+						}
+						passesRequirements = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					System.out.println(partView.getQuantity());
 					break;
 				case "Cancel":
 					partView.dispose();

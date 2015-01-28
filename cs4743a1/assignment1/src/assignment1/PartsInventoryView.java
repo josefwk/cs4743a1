@@ -51,7 +51,7 @@ public class PartsInventoryView extends JFrame {
 		
 		// Creates the panel to hold the parts within the inventory frame
 		inventoryPanel = new JPanel();
-		inventoryPanel.setBackground(Color.WHITE);
+		//inventoryPanel.setBackground(Color.WHITE);
 		inventoryPanel.setBounds(15, 15, 350, 350);
 		inventoryFrame.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
