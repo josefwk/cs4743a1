@@ -91,6 +91,7 @@ public class PartView extends JFrame {
 		ok.addActionListener(controller);
 		cancel.addActionListener(controller);
 		edit.addActionListener(controller);
+		save.addActionListener(controller);
 	}
 	
 	public String getName() {
@@ -139,7 +140,7 @@ public class PartView extends JFrame {
 	
 	public void disableEditable() {
 		ok.setVisible(false);
-		save.setEnabled(false);
+		save.setVisible(false);
 		nameField.setEnabled(false);
 		numberField.setEnabled(false);
 		vendorField.setEnabled(false);
@@ -147,7 +148,7 @@ public class PartView extends JFrame {
 	}
 	
 	public void enableEditable() {
-		save.setEnabled(true);
+		save.setVisible(true);
 		nameField.setEnabled(true);
 		numberField.setEnabled(true);
 		vendorField.setEnabled(true);
