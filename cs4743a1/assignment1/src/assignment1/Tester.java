@@ -3,14 +3,21 @@ package assignment1;
 import java.io.IOException;
 
 public class Tester {
-	// Test
+	private static PartsInventoryView partsInventoryView;
+	private static PartsInventoryController partsInventoryController;
+	private static PartsInventoryModel partsInventoryModel;
+	
 	public static void main(String args[]) {
-		PartsInventoryModel pim = new PartsInventoryModel();
-	//	PartsInventoryView pview = new PartsInventoryView(pim);
+		partsInventoryModel = new PartsInventoryModel();
+		partsInventoryView = new PartsInventoryView(partsInventoryModel);
+		partsInventoryController = new PartsInventoryController(partsInventoryView);
+			
+		partsInventoryView.register(partsInventoryController);
+		
 		for (int i = 1; i < 8; i++) {
 			try {
 				Part p = new Part(i, "MyPartName" + i, "MyPartNumber" + i, "Vendor" + i);
-				pim.addPart(p);
+				partsInventoryModel.addPart(p);
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -19,15 +26,15 @@ public class Tester {
 				e.printStackTrace();
 			}
 		}
-		pim.printInventory();
-		pim.deletePart("MyPartName5");
-		Part p = pim.findPartName("MyPartName3");
+		partsInventoryModel.printInventory();
+		partsInventoryModel.deletePart("MyPartName5");
+		Part p = partsInventoryModel.findPartName("MyPartName3");
 		try {
-			pim.editPart(p, p.getQuantity(), p.getPartName(), p.getPartNumber(), "SomeOtherVendor");
+			partsInventoryModel.editPart(p, p.getQuantity(), p.getPartName(), p.getPartNumber(), "SomeOtherVendor");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		pim.printInventory();
+		partsInventoryModel.printInventory();
 	}
 }

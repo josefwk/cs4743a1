@@ -17,4 +17,12 @@ public class PartsInventoryPanel extends JPanel {
 		this.setVisible(true);
 		this.setFocusable(true);
 	}
+	
+	public PartsInventoryPanel(PartsInventoryModel model, PartView view) {
+		super();
+		this.setSize(400, 300);
+		this.setBackground(Color.white);
+		this.setVisible(true);
+		this.setFocusable(true);
+	}
 }
