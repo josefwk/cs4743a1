@@ -35,6 +35,8 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 				case "Add": 
 					partView = new PartView(partsInventoryModel);
 					partView.register(this);
+					partView.hideSaveButton();
+					partView.hideEditButton();
 					break;
 				case "Delete":
 					if (selectedParts != null) {
@@ -46,14 +48,12 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 						inventoryView.repaint();
 					}
 					break;
-				case "Edit":
-					break;
 				case "View":
 					if (selectedParts != null) {
 						for (Part p : selectedParts) {
 							partView = new PartView(partsInventoryModel);
 							partView.register(this);
-							partView.disableEdit();
+							partView.disableEditable();
 							partView.setName(p.getPartName());
 							partView.setNumber(p.getPartNumber());
 							partView.setVendor(p.getVendor());
@@ -62,7 +62,15 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 					selectedParts = null;
 					inventoryView.updatePanel();
 					inventoryView.repaint();
+					if (command == "Edit")
+						System.out.println("test");
 					}
+					break;
+				case "Edit":
+					partView.enableEditable();
+					partView.hideEditButton();
+					partView.repaint();
+					
 					break;
 				case "OK":
 					try {

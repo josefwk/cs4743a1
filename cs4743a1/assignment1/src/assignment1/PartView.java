@@ -14,12 +14,12 @@ public class PartView extends JFrame {
 	private PartsInventoryModel model;
 	private PartsInventoryPanel panel;
 	private JPanel partFrame;
-	private JButton cancel, ok, edit;
+	private JButton cancel, ok, edit, save;
 	private JLabel partName, partNumber, partVendor, partQuantity, errorMessage;
 	private JTextField nameField, numberField, vendorField, quantityField;
 	
 	public PartView(PartsInventoryModel model) {
-		super("My Selected Part");
+		super("Selected Part");
 			this.model = model;
 			panel = new PartsInventoryPanel(model, this);
 			this.add(panel, BorderLayout.CENTER);
@@ -66,6 +66,10 @@ public class PartView extends JFrame {
 			edit.setBounds(15, 150, 70, 25);
 			partFrame.add(edit);
 			
+			save = new JButton("Save");
+			save.setBounds(155, 150, 70, 25);
+			partFrame.add(save);
+			
 			nameField = new JTextField();
 			nameField.setBounds(100, 20, 200, 20);
 			partFrame.add(nameField);
@@ -86,6 +90,7 @@ public class PartView extends JFrame {
 	public void register(PartsInventoryController controller) {
 		ok.addActionListener(controller);
 		cancel.addActionListener(controller);
+		edit.addActionListener(controller);
 	}
 	
 	public String getName() {
@@ -124,11 +129,28 @@ public class PartView extends JFrame {
 		quantityField.setText(String.valueOf(quantity));
 	}
 	
-	public void disableEdit() {
-		ok.setEnabled(false);
+	public void hideEditButton() {
+		edit.setVisible(false);
+	}
+	
+	public void hideSaveButton() {
+		save.setVisible(false);
+	}
+	
+	public void disableEditable() {
+		ok.setVisible(false);
+		save.setEnabled(false);
 		nameField.setEnabled(false);
 		numberField.setEnabled(false);
 		vendorField.setEnabled(false);
 		quantityField.setEnabled(false);
+	}
+	
+	public void enableEditable() {
+		save.setEnabled(true);
+		nameField.setEnabled(true);
+		numberField.setEnabled(true);
+		vendorField.setEnabled(true);
+		quantityField.setEnabled(true);
 	}
 }
