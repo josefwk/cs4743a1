@@ -42,7 +42,6 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 							partsInventoryModel.deletePart(p);
 						}
 						selectedParts = null;
-						//partView.dispose();
 						inventoryView.updatePanel();
 						inventoryView.repaint();
 					}
@@ -50,6 +49,20 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 				case "Edit":
 					break;
 				case "View":
+					partView = new PartView(partsInventoryModel);
+					partView.register(this);
+					if (selectedParts != null) {
+						for (Part p : selectedParts) {
+							partView.disableEdit();
+							partView.setName(p.getPartName());
+							partView.setNumber(p.getPartNumber());
+							partView.setVendor(p.getVendor());
+							partView.setQuantity(p.getQuantity());
+						}
+					selectedParts = null;
+					inventoryView.updatePanel();
+					inventoryView.repaint();
+					}
 					break;
 				case "OK":
 					try {

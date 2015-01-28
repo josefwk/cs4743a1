@@ -103,4 +103,28 @@ public class PartView extends JFrame {
 	public void setErrorMessage(String error) {
 		errorMessage.setText(error);
 	}
+	
+	public void setName(String name) {
+		nameField.setText(name);
+	}
+	
+	public void setNumber(String number) {
+		numberField.setText(number);
+	}
+	
+	public void setVendor(String vendor) {
+		vendorField.setText(vendor);
+	}
+	
+	public void setQuantity(Integer quantity) {
+		quantityField.setText(String.valueOf(quantity));
+	}
+	
+	public void disableEdit() {
+		ok.setEnabled(false);
+		nameField.setEnabled(false);
+		numberField.setEnabled(false);
+		vendorField.setEnabled(false);
+		quantityField.setEnabled(false);
+	}
 }
