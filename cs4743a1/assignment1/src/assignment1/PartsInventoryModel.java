@@ -128,6 +128,10 @@ public class PartsInventoryModel {
 		return partsInventory.size();
 	}
 	
+	public List<Part> getInventory() { // for GUI output
+		return partsInventory;
+	}
+	
 	public void sortByQuantityDescending() {
 		sortingMode = Part.QuantityDescending;
 		partsInventory.sort(sortingMode);

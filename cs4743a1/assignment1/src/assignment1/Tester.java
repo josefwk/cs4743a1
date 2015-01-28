@@ -9,11 +9,7 @@ public class Tester {
 	
 	public static void main(String args[]) {
 		partsInventoryModel = new PartsInventoryModel();
-		partsInventoryView = new PartsInventoryView(partsInventoryModel);
-		partsInventoryController = new PartsInventoryController(partsInventoryView);
-			
-		partsInventoryView.register(partsInventoryController);
-		
+	
 		for (int i = 1; i < 8; i++) {
 			try {
 				Part p = new Part(i, "MyPartName" + i, "MyPartNumber" + i, "Vendor" + i);
@@ -26,15 +22,14 @@ public class Tester {
 				e.printStackTrace();
 			}
 		}
-		partsInventoryModel.printInventory();
-		partsInventoryModel.deletePart("MyPartName5");
-		Part p = partsInventoryModel.findPartName("MyPartName3");
-		try {
-			partsInventoryModel.editPart(p, p.getQuantity(), p.getPartName(), p.getPartNumber(), "SomeOtherVendor");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		partsInventoryModel.printInventory();
+		
+		partsInventoryView = new PartsInventoryView(partsInventoryModel);
+		
+		partsInventoryController = new PartsInventoryController(partsInventoryModel, partsInventoryView);
+			
+		partsInventoryView.register(partsInventoryController);
+		
+		
+		
 	}
 }

@@ -45,6 +45,11 @@ public class Part implements Comparable<Part> {
 		return this.vendor;
 	}
 	
+	@Override
+	public String toString() {
+		return getPartName() + " " + getPartNumber() + " " + getVendor() + " " + getQuantity();
+	}
+	
 	public static int getMaxPartNameLength() {
 		return maxPartNameLength;
 	}

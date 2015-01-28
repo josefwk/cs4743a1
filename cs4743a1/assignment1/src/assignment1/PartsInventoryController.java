@@ -12,9 +12,10 @@ public class PartsInventoryController implements ActionListener {
 	private Part part;
 	private boolean passesRequirements;
 	
-		public PartsInventoryController(PartsInventoryView inventoryView) {
+		public PartsInventoryController(PartsInventoryModel inventoryModel, PartsInventoryView inventoryView) {
+			this.partsInventoryModel = inventoryModel;
 			this.inventoryView = inventoryView;
-			partsInventoryModel = new PartsInventoryModel();
+			// partsInventoryModel = new PartsInventoryModel();
 			passesRequirements = true;
 		}
 
@@ -42,16 +43,16 @@ public class PartsInventoryController implements ActionListener {
 				case "OK":
 					try {
 						if (passesRequirements == true) {
-							if (partView.getNumber().length() > 20) {
-								System.out.println("Number length exceeds maximum. Must be 20 characters or less. Try again.");
+							if (partView.getNumber().length() > Part.getMaxPartNumberLength()) {
+								System.out.println("Number length exceeds maximum. Must be " + Part.getMaxPartNumberLength() + " characters or less. Try again.");
 								passesRequirements = false;
 							}	
-							if (partView.getName().length() > 255) {
-								System.out.println("Name length exceeds maximum. Must be 255 characters or less. Try again.");
+							if (partView.getName().length() > Part.getMaxPartNameLength()) {
+								System.out.println("Name length exceeds maximum. Must be " + Part.getMaxPartNameLength() + " characters or less. Try again.");
 								passesRequirements = false;
 							}
-							if (partView.getVendor().length() > 255) {
-								System.out.println("Vendor length exceeds maximum. Must be 255 characters or less. Try again.");
+							if (partView.getVendor().length() > Part.getMaxVendorLength()) {
+								System.out.println("Vendor length exceeds maximum. Must be " + Part.getMaxVendorLength() + " characters or less. Try again.");
 								passesRequirements = false;
 							}
 							if (partView.getQuantity().intValue() < 1) {
@@ -65,6 +66,9 @@ public class PartsInventoryController implements ActionListener {
 							part = new Part(partView.getQuantity(), partView.getName(), partView.getNumber(), partView.getVendor());		
 							partsInventoryModel.addPart(part);
 							partView.dispose();
+							inventoryView.updatePanel();
+							inventoryView.repaint();
+
 						}
 						passesRequirements = true;
 					} catch (Exception e1) {

@@ -17,6 +17,9 @@ public class PartsInventoryView extends JFrame {
 	private JList inventoryList;
 	private String[] names = {"ryan", "dallas", "austin"};
 	
+	private JList<Part> inventory;
+	private DefaultListModel<Part> list;
+	
 	public PartsInventoryView(PartsInventoryModel model) {
 		super("Cabinetron");
 		this.model = model;
@@ -56,11 +59,27 @@ public class PartsInventoryView extends JFrame {
 		inventoryFrame.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
 		
+		
+		/*
 		inventoryList = new JList(names);
 		inventoryList.setBackground(Color.WHITE);
 		inventoryList.setBounds(15, 15, 350, 350);
 		inventoryFrame.add(inventoryList);
 		inventoryList.setLayout(new FlowLayout());
+		*/
+		
+		
+		list = new DefaultListModel<Part>();
+		for (Part p : model.getInventory()) {
+			list.addElement(p);
+		}
+
+		inventory = new JList<Part>(list);
+		inventory.setBackground(Color.WHITE);
+		inventory.setBounds(0, 0, inventoryPanel.getWidth(), inventoryPanel.getHeight());
+		inventory.setLayout(new FlowLayout());
+		inventoryPanel.add(inventory);
+
 		
 		// Creates the scroll pane to navigate a large inventory in the inventory panel
 		//inventoryArea = new JTextArea();
@@ -72,6 +91,21 @@ public class PartsInventoryView extends JFrame {
 		//inventoryArea.addMouseListener(l);
 		//inventoryArea.append("test");
 	}
+	
+	public void updatePanel() {
+		list = new DefaultListModel<Part>();
+		
+		for (Part p : model.getInventory()) {
+			list.addElement(p);
+		}
+		inventory = new JList<Part>(list);
+		inventory.setBackground(Color.WHITE);
+		inventory.setBounds(0, 0, inventoryPanel.getWidth(), inventoryPanel.getHeight());
+		inventory.setLayout(new FlowLayout());
+		inventoryPanel.removeAll();
+		inventoryPanel.add(inventory);
+	}
+
 	
 	public void register(PartsInventoryController controller) {
 		addPart.addActionListener(controller);
