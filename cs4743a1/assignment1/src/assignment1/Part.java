@@ -20,7 +20,8 @@ public class Part implements Comparable<Part> {
 			setPartNumber(partNum);
 		}
 		catch (IOException e) {
-			throw new IOException("Exception thrown during Part creation: \n\t" + e);
+			//throw new IOException("Exception thrown during Part creation: \n\t" + e);
+			throw new IOException(e.getMessage());
 		}
 	}
 	
@@ -75,8 +76,11 @@ public class Part implements Comparable<Part> {
 		if (partName.length() > maxPartNameLength) {
 			throw new IOException("Error: part name is too long (" + maxPartNameLength + " characters max).");
 		}
+		else if (partName.trim().length() == 0) {
+			throw new IOException("Error: part name is required.");
+		}
 		else {
-			this.partName = partName;
+			this.partName = partName.trim();
 		}
 	}
 	
@@ -84,8 +88,11 @@ public class Part implements Comparable<Part> {
 		if (partNumber.length() > maxPartNumberLength) {
 			throw new IOException("Error: part number is too long (" + maxPartNumberLength + " characters max).");
 		}
+		else if (partNumber.trim().length() == 0) {
+			throw new IOException("Error: part number is required.");
+		}
 		else {
-			this.partNumber = partNumber;
+			this.partNumber = partNumber.trim();
 		}
 	}
 	
@@ -94,7 +101,7 @@ public class Part implements Comparable<Part> {
 			throw new IOException("Error: part name is too long (" + maxVendorLength + " characters max).");
 		}
 		else {
-			this.vendor = vendor;
+			this.vendor = vendor.trim();
 		}
 	}
 

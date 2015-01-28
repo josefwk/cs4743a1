@@ -132,45 +132,44 @@ public class PartsInventoryModel {
 		return partsInventory;
 	}
 	
-	public void sortByQuantityDescending() {
-		sortingMode = Part.QuantityDescending;
+	public void sortByQuantity() {
+		if (sortingMode == Part.QuantityDescending) {
+			sortingMode = Part.QuantityAscending;
+		}
+		else {
+			sortingMode = Part.QuantityDescending;
+		}
 		partsInventory.sort(sortingMode);
 	}
 	
-	public void sortByQuantityAscending() {
-		sortingMode = Part.QuantityAscending;
+	public void sortByPartName() {
+		if (sortingMode == Part.PartNameDescending) {
+			sortingMode = Part.PartNameAscending;
+		}
+		else {
+			sortingMode = Part.PartNameDescending;
+		}
 		partsInventory.sort(sortingMode);
 	}
 	
-	public void sortByPartNameDescending() {
-		sortingMode = Part.PartNameDescending;
+	public void sortByPartNumber() {
+		if (sortingMode == Part.PartNumberDescending) {
+			sortingMode = Part.PartNumberAscending;
+		}
+		else {
+			sortingMode = Part.PartNumberDescending;
+		}
 		partsInventory.sort(sortingMode);
 	}
 	
-	public void sortByPartNameAscending() {
-		sortingMode = Part.PartNameAscending;
+	public void sortByVendor() {
+		if (sortingMode == Part.VendorDescending) {
+			sortingMode = Part.VendorAscending;
+		}
+		else {
+			sortingMode = Part.VendorDescending;
+		}
 		partsInventory.sort(sortingMode);
 	}
-	
-	public void sortByPartNumberDescending() {
-		sortingMode = Part.PartNumberDescending;
-		partsInventory.sort(sortingMode);
-	}
-	
-	public void sortByPartNumberAscending() {
-		sortingMode = Part.PartNumberAscending;
-		partsInventory.sort(sortingMode);
-	}
-	
-	public void sortByVendorDescending() {
-		sortingMode = Part.VendorDescending;
-		partsInventory.sort(sortingMode);
-	}
-	
-	public void sortByVendorAscending() {
-		sortingMode = Part.VendorAscending;
-		partsInventory.sort(sortingMode);
-	}
-	
 	
 }

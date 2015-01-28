@@ -15,7 +15,7 @@ public class PartView extends JFrame {
 	private PartsInventoryPanel panel;
 	private JPanel partFrame;
 	private JButton cancel, ok;
-	private JLabel partName, partNumber, partVendor, partQuantity;
+	private JLabel partName, partNumber, partVendor, partQuantity, errorMessage;
 	private JTextField nameField, numberField, vendorField, quantityField;
 	
 	public PartView(PartsInventoryModel model) {
@@ -48,6 +48,11 @@ public class PartView extends JFrame {
 			partQuantity = new JLabel("Quantity");
 			partQuantity.setBounds(15, 105, 70, 30);
 			partFrame.add(partQuantity);
+			
+			errorMessage = new JLabel("");
+			errorMessage.setForeground(Color.red);
+			errorMessage.setBounds(15, 175, 280, 30);
+			partFrame.add(errorMessage);
 			
 			cancel = new JButton("Cancel");
 			cancel.setBounds(225, 150, 75, 25);
@@ -93,5 +98,9 @@ public class PartView extends JFrame {
 	
 	public Integer getQuantity() {
 		return Integer.parseInt(quantityField.getText());
+	}
+	
+	public void setErrorMessage(String error) {
+		errorMessage.setText(error);
 	}
 }

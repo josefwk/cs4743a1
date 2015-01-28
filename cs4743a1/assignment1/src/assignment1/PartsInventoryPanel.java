@@ -12,7 +12,7 @@ public class PartsInventoryPanel extends JPanel {
 	
 	public PartsInventoryPanel(PartsInventoryModel model, PartsInventoryView view) {
 		super();
-		this.setSize(400, 300);
+		this.setSize(view.getWidth(), view.getHeight());
 		this.setBackground(Color.white);
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -20,7 +20,7 @@ public class PartsInventoryPanel extends JPanel {
 	
 	public PartsInventoryPanel(PartsInventoryModel model, PartView view) {
 		super();
-		this.setSize(400, 300);
+		this.setSize(view.getWidth(), view.getHeight());
 		this.setBackground(Color.white);
 		this.setVisible(true);
 		this.setFocusable(true);
