@@ -49,10 +49,10 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 				case "Edit":
 					break;
 				case "View":
-					partView = new PartView(partsInventoryModel);
-					partView.register(this);
 					if (selectedParts != null) {
 						for (Part p : selectedParts) {
+							partView = new PartView(partsInventoryModel);
+							partView.register(this);
 							partView.disableEdit();
 							partView.setName(p.getPartName());
 							partView.setNumber(p.getPartNumber());

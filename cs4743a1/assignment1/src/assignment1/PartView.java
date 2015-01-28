@@ -14,7 +14,7 @@ public class PartView extends JFrame {
 	private PartsInventoryModel model;
 	private PartsInventoryPanel panel;
 	private JPanel partFrame;
-	private JButton cancel, ok;
+	private JButton cancel, ok, edit;
 	private JLabel partName, partNumber, partVendor, partQuantity, errorMessage;
 	private JTextField nameField, numberField, vendorField, quantityField;
 	
@@ -61,6 +61,10 @@ public class PartView extends JFrame {
 			ok = new JButton("OK");
 			ok.setBounds(155, 150, 70, 25);
 			partFrame.add(ok);
+			
+			edit = new JButton("Edit");
+			edit.setBounds(15, 150, 70, 25);
+			partFrame.add(edit);
 			
 			nameField = new JTextField();
 			nameField.setBounds(100, 20, 200, 20);
