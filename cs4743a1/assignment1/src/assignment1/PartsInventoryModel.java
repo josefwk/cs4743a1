@@ -65,10 +65,12 @@ public class PartsInventoryModel {
 	
 	public void editPart(Part partOld, Part partNew) throws Exception {
 		int index = partsInventory.indexOf(partOld);
-		if (index == -1) {
-			throw new Exception("Error: the old part, " + partOld.getPartName() + " cannot be edited as it is not listed in inventory.");
-		}
-		else {
+		//if (index == -1) {
+		//	throw new Exception("Error: the old part, " + partOld.getPartName() + " cannot be edited as it is not listed in inventory.");
+		//}
+		if (findPartName(partNew.getPartName()) != null) {
+			throw new Exception("Part name \"" + partNew.getPartName() + "\" is already listed in inventory.");
+		} else {
 			partsInventory.set(index, partNew);
 		}
 	}

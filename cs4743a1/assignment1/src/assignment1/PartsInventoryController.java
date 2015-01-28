@@ -29,7 +29,7 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) throws NumberFormatException {
 			String command = e.getActionCommand();
 			switch(command) {
 				case "Add": 
@@ -59,7 +59,7 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 							partView.setVendor(p.getVendor());
 							partView.setQuantity(p.getQuantity());
 						}
-					selectedParts = null;
+					//selectedParts = null;
 					inventoryView.updatePanel();
 					inventoryView.repaint();
 					if (command == "Edit")
@@ -71,6 +71,28 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 					partView.hideEditButton();
 					partView.repaint();
 					
+					break;
+				case "Save":
+					if (selectedParts != null) {
+						for (Part p : selectedParts) {
+							try {
+								Part newPart = new Part(partView.getQuantity(), partView.getName(), partView.getNumber(), partView.getVendor());
+								partsInventoryModel.editPart(p, newPart);
+								partView.dispose();
+								inventoryView.updatePanel();
+								inventoryView.repaint();
+								selectedParts = null;	
+							} catch (NumberFormatException noint) {
+								partView.setErrorMessage("Error: quantity must be a positive integer.");
+								//partView.setErrorMessage(noint.getMessage());
+								//System.out.println(noint.getMessage());
+							} catch (IOException ex) {
+								partView.setErrorMessage(ex.getMessage());
+							} catch (Exception e1) {
+								partView.setErrorMessage("Error: part name already exists in the inventory.");
+							} 
+						}					
+					}	
 					break;
 				case "OK":
 					try {

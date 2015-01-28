@@ -98,7 +98,7 @@ public class Part implements Comparable<Part> {
 	
 	void setVendor(String vendor) throws IOException {
 		if (vendor.length() > maxVendorLength) {
-			throw new IOException("Error: part name is too long (" + maxVendorLength + " characters max).");
+			throw new IOException("Error: vendor name is too long (" + maxVendorLength + " characters max).");
 		}
 		else {
 			this.vendor = vendor.trim();
