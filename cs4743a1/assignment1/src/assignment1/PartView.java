@@ -63,7 +63,7 @@ public class PartView extends JFrame {
 			partFrame.add(ok);
 			
 			edit = new JButton("Edit");
-			edit.setBounds(15, 150, 70, 25);
+			edit.setBounds(155, 150, 70, 25);
 			partFrame.add(edit);
 			
 			save = new JButton("Save");
