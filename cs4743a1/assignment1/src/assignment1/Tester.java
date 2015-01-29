@@ -10,7 +10,7 @@ public class Tester {
 	public static void main(String args[]) {
 		partsInventoryModel = new PartsInventoryModel();
 	
-		for (int i = 1; i < 8; i++) {
+		for (int i = 1; i < 58; i++) {
 			try {
 				Part p = new Part(i, "MyPartName" + i, "MyPartNumber" + i, "Vendor" + i);
 				partsInventoryModel.addPart(p);

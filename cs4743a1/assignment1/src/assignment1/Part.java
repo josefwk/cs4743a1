@@ -48,7 +48,10 @@ public class Part implements Comparable<Part> {
 	
 	@Override
 	public String toString() {
-		return getPartName() + " " + getPartNumber() + " " + getVendor() + " " + getQuantity();
+		//int width; // 
+		//String format = "%" + width + "s" + "%" + width + "s" + "%" + width + "s" + "%" + width + "s";
+		//return String.format(format, getPartName(), getPartNumber(), getVendor(), getQuantity());
+		return getPartName() + " | " + getPartNumber() + " | " + getVendor() + " | " + getQuantity(); // looks bad, would prefer separated adjustable columns
 	}
 	
 	public static int getMaxPartNameLength() {

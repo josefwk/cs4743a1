@@ -15,43 +15,60 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 	private PartsInventoryModel partsInventoryModel;
 	private PartsInventoryView inventoryView;
 	private PartView partView;
-	private boolean passesRequirements;
 	private JButton lastButtonClicked;
 	private Color lastButtonOriginalColor;
 	private Color highlightedColor = new Color(255, 255, 153);
 	private List<Part> selectedParts = null;
+	private boolean hasPartViewOpen;
 	
 		public PartsInventoryController(PartsInventoryModel inventoryModel, PartsInventoryView inventoryView) {
 			lastButtonClicked = null;
 			this.partsInventoryModel = inventoryModel;
 			this.inventoryView = inventoryView;
-			passesRequirements = true;
+			hasPartViewOpen = false;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) throws NumberFormatException {
 			String command = e.getActionCommand();
+			
+			e.paramString();
+			
 			switch(command) {
 				case "Add": 
-					partView = new PartView(partsInventoryModel);
+					if (hasPartViewOpen) {
+						partView.dispose();
+					}
+					ClearSelection();
+					partView = new PartView(partsInventoryModel, "Add New Part");
 					partView.register(this);
 					partView.hideSaveButton();
 					partView.hideEditButton();
+					hasPartViewOpen = true;
 					break;
 				case "Delete":
 					if (selectedParts != null) {
+						if (hasPartViewOpen) {
+							partView.dispose();
+							hasPartViewOpen = false;
+						}
 						for (Part p : selectedParts) {
 							partsInventoryModel.deletePart(p);
 						}
-						selectedParts = null;
+						ClearSelection();
 						inventoryView.updatePanel();
 						inventoryView.repaint();
 					}
 					break;
 				case "View":
+					if (hasPartViewOpen) {
+						partView.dispose();
+					}
 					if (selectedParts != null) {
+						inventoryView.disableDelete();
+						inventoryView.disableView();
 						for (Part p : selectedParts) {
-							partView = new PartView(partsInventoryModel);
+							partView = new PartView(partsInventoryModel, "View/Edit Part: " + p.getPartName());
 							partView.register(this);
 							partView.disableEditable();
 							partView.setName(p.getPartName());
@@ -59,11 +76,9 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 							partView.setVendor(p.getVendor());
 							partView.setQuantity(p.getQuantity());
 						}
-					//selectedParts = null;
 					inventoryView.updatePanel();
 					inventoryView.repaint();
-					if (command == "Edit")
-						System.out.println("test");
+					hasPartViewOpen = true;
 					}
 					break;
 				case "Edit":
@@ -81,15 +96,13 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 								partView.dispose();
 								inventoryView.updatePanel();
 								inventoryView.repaint();
-								selectedParts = null;	
+								ClearSelection();
 							} catch (NumberFormatException noint) {
-								partView.setErrorMessage("Error: quantity must be a positive integer.");
-								//partView.setErrorMessage(noint.getMessage());
-								//System.out.println(noint.getMessage());
+								partView.setErrorMessage(noint.getMessage());
 							} catch (IOException ex) {
 								partView.setErrorMessage(ex.getMessage());
 							} catch (Exception e1) {
-								partView.setErrorMessage("Error: part name already exists in the inventory.");
+								partView.setErrorMessage(e1.getMessage());
 							} 
 						}					
 					}	
@@ -103,83 +116,55 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 						inventoryView.repaint();
 					}
 					catch (NumberFormatException noint) {
-						partView.setErrorMessage("Error: quantity must be a positive integer.");
-						//partView.setErrorMessage(noint.getMessage());
-						//System.out.println(noint.getMessage());
+						partView.setErrorMessage(noint.getMessage());
 					}
 					catch (IOException ioex) {
 						partView.setErrorMessage(ioex.getMessage());
-						//System.out.println(ioex.getMessage());
 					}
 					catch (Exception ex) {
 						partView.setErrorMessage(ex.getMessage());
-						//System.out.println(ex.getMessage());
 					}
-					/*
-					try {
-						if (passesRequirements == true) {
-							if (partView.getNumber().length() > Part.getMaxPartNumberLength()) {
-								System.out.println("Number length exceeds maximum. Must be " + Part.getMaxPartNumberLength() + " characters or less. Try again.");
-								passesRequirements = false;
-							}	
-							if (partView.getName().length() > Part.getMaxPartNameLength()) {
-								System.out.println("Name length exceeds maximum. Must be " + Part.getMaxPartNameLength() + " characters or less. Try again.");
-								passesRequirements = false;
-							}
-							if (partView.getVendor().length() > Part.getMaxVendorLength()) {
-								System.out.println("Vendor length exceeds maximum. Must be " + Part.getMaxVendorLength() + " characters or less. Try again.");
-								passesRequirements = false;
-							}
-							if (partView.getQuantity().intValue() < 1) {
-								System.out.println("Quantity is less than 1. Must be greater than 0. Try again.");
-								passesRequirements = false;
-							}
-							if (passesRequirements == false)
-								partView.dispose();
-						} 
-						if (passesRequirements == true) {
-							Part part = new Part(partView.getQuantity(), partView.getName(), partView.getNumber(), partView.getVendor());		
-							partsInventoryModel.addPart(part);
-							partView.dispose();
-							inventoryView.updatePanel();
-							inventoryView.repaint();
-
-						}
-
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					*/
 					break;
 				case "Cancel":
 					partView.dispose();
+					selectedParts = null;
 					break;
 				case "Part Name":
 					ChangeButtonColors(e);
 					partsInventoryModel.sortByPartName();
+					ClearSelection();
 					inventoryView.updatePanel();
 					inventoryView.repaint();
 					break;
 				case "Part #":
 					ChangeButtonColors(e);
 					partsInventoryModel.sortByPartNumber();
+					ClearSelection();
 					inventoryView.updatePanel();
 					inventoryView.repaint();
 					break;
 				case "Vendor":
 					ChangeButtonColors(e);
 					partsInventoryModel.sortByVendor();
+					ClearSelection();
 					inventoryView.updatePanel();
 					inventoryView.repaint();
 					break;
 				case "Quantity":
 					ChangeButtonColors(e);
 					partsInventoryModel.sortByQuantity();
+					ClearSelection();
 					inventoryView.updatePanel();
 					inventoryView.repaint();
 					break;
 					
 			}
+		}
+		
+		void ClearSelection() {
+			selectedParts = null;
+			inventoryView.disableDelete();
+			inventoryView.disableView();
 		}
 		
 		// restores previous button clicked to its original color; changes color of current button clicked 
@@ -195,10 +180,14 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 		// When the user clicks on an element in the inventory list, event is triggered: gets Part from index of list element
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			if (e.getValueIsAdjusting()) {
-				JList<Part> j = (JList<Part>) e.getSource();
-				//selectedPart = (Part) j.getModel().getElementAt(j.getSelectedIndex()); // only works on first selected element
-				selectedParts = j.getSelectedValuesList(); // operates on all selected elements (Shift + Click or Ctrl + Click)
+			JList<Part> j;
+			if (e.getSource() instanceof JList<?>) {
+				j = (JList<Part>) e.getSource();
+				if (j.getSelectedValue() != null) {
+					selectedParts = j.getSelectedValuesList();
+					inventoryView.enableDelete();
+					inventoryView.enableView();
+				}		
 			}
 		}
 }

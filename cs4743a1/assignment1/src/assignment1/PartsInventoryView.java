@@ -1,6 +1,5 @@
 package assignment1;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.*;
@@ -10,15 +9,15 @@ import javax.swing.border.EmptyBorder;
 public class PartsInventoryView extends JFrame {	
 	private PartsInventoryModel model;
 
-	private JPanel inventoryFrame, inventoryUIPanel, inventoryListPanel; // layers 1, 2, 3
-	private JButton addPart, editPart, deletePart, viewPart;
+	private JPanel inventoryFrame, inventoryUI; // layers 1, 2, 3
+	private JButton addPart, deletePart, viewPart;
 	private JButton headingName, headingNumber, headingVendor, headingQuantity;
 	private JList<Part> inventory;
 	private DefaultListModel<Part> list;
 	private int GUIWidth;
 	private int GUIHeight;
 	private Color offWhite = new Color(232, 232, 232);
-	private ListSelectionModel listSelection;
+	private JScrollPane inventoryListPanel;
 
 	public PartsInventoryView(PartsInventoryModel model) {
 		super("Cabinetron");
@@ -49,71 +48,61 @@ public class PartsInventoryView extends JFrame {
 		// Creates and adds the "delete" button to the inventory frame
 		deletePart = new JButton("Delete");
 		deletePart.setBounds(105, 410, 70, 30);
+		disableDelete();
 		inventoryFrame.add(deletePart);
 		
 		// Creates and adds the "view" button to the inventory frame
 		viewPart = new JButton("View");
 		viewPart.setBounds(295, 410, 70, 30);
+		disableView();
 		inventoryFrame.add(viewPart);
 		
 		// Creates the panel to hold the parts within the inventory frame
-		inventoryUIPanel = new JPanel();
-		inventoryUIPanel.setBackground(Color.WHITE);
-		inventoryUIPanel.setBounds(15, 15, inventoryFrame.getWidth() - 45, 32);
-		inventoryFrame.add(inventoryUIPanel);
+		inventoryListPanel = new JScrollPane();
+		inventoryListPanel.setBackground(Color.WHITE);
+		inventoryListPanel.setBounds(15, 40, inventoryFrame.getWidth() - 45, inventoryFrame.getHeight() - 150);
+		
+		inventoryUI = new JPanel();
+		inventoryUI.setBackground(offWhite);
+		inventoryUI.setBounds(15, 15, inventoryListPanel.getWidth(), 25);
+		inventoryUI.setLayout(null);
 		
 		headingName = new JButton("Part Name");
 		headingName.setBackground(offWhite);
-		headingName.setBounds(0, 0, inventoryUIPanel.getWidth() / 4, 25);
+		headingName.setBounds(0, 0, inventoryListPanel.getWidth() / 4, 25);
 		headingName.setFocusPainted(false);
-		inventoryUIPanel.add(headingName);
+		inventoryUI.add(headingName);
 		
 		headingNumber = new JButton("Part #");
 		headingNumber.setBackground(offWhite);
-		headingNumber.setBounds(0, 0, inventoryUIPanel.getWidth() / 4, 25);
+		headingNumber.setBounds((inventoryListPanel.getWidth() / 4) * 1, 0, inventoryListPanel.getWidth() / 4, 25);
 		headingNumber.setFocusPainted(false);
-		inventoryUIPanel.add(headingNumber);
+		inventoryUI.add(headingNumber);
 		
 		headingVendor = new JButton("Vendor");
 		headingVendor.setBackground(offWhite);
-		headingVendor.setBounds(0, 0, inventoryUIPanel.getWidth() / 4, 25);
+		headingVendor.setBounds((inventoryListPanel.getWidth() / 4) * 2, 0, inventoryListPanel.getWidth() / 4, 25);
 		headingVendor.setFocusPainted(false);
-		inventoryUIPanel.add(headingVendor);
+		inventoryUI.add(headingVendor);
 		
 		headingQuantity = new JButton("Quantity");
 		headingQuantity.setBackground(offWhite);
-		headingQuantity.setBounds(0, 0, inventoryUIPanel.getWidth() / 4, 25);
+		headingQuantity.setBounds((inventoryListPanel.getWidth() / 4) * 3, 0, (inventoryListPanel.getWidth() / 4) + (inventoryListPanel.getWidth() % 4), 25);
 		headingQuantity.setFocusPainted(false);
-		inventoryUIPanel.add(headingQuantity);
-		
-		
-		// Creates the panel to hold the parts within the inventory frame
-		inventoryListPanel = new JPanel();
-		inventoryListPanel.setBackground(Color.RED);
-		inventoryListPanel.setBounds(15, 15, inventoryFrame.getWidth() - 45, inventoryFrame.getHeight() - 150);
-		inventoryFrame.add(inventoryListPanel);
-		inventoryListPanel.setLayout(null);
+		inventoryUI.add(headingQuantity);
 
 		list = new DefaultListModel<Part>();
 		for (Part p : model.getInventory()) {
 			list.addElement(p);
 		}
-
 		inventory = new JList<Part>(list);
 		inventory.setBackground(Color.WHITE);
-		inventory.setBounds(0, 32, inventoryListPanel.getWidth(), inventoryListPanel.getHeight());
-		inventoryListPanel.add(inventory);
-
+		inventory.setBounds(0, 0, inventoryListPanel.getWidth(), inventoryListPanel.getHeight());
+		inventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		inventoryListPanel.setViewportView(inventory);
 		
-		// Creates the scroll pane to navigate a large inventory in the inventory panel
-		//inventoryArea = new JTextArea();
-		//inventoryArea.setEditable(false);
-		//inventoryScroll = new JScrollPane(inventoryArea);
-		//inventoryScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		//inventoryScroll.setBounds(5, 0, 345, 345);
-		//inventoryPanel.add(inventoryScroll);
-		//inventoryArea.addMouseListener(l);
-		//inventoryArea.append("test");
+		inventoryFrame.add(inventoryUI);
+		inventoryFrame.add(inventoryListPanel);
 		
 		repaint();
 	}
@@ -124,12 +113,10 @@ public class PartsInventoryView extends JFrame {
 		for (Part p : model.getInventory()) {
 			list.addElement(p);
 		}
-		inventory.removeAll();
 		inventory.setModel(list);
 		inventory.setBackground(Color.WHITE);
-		inventory.setBounds(0, 32, inventoryListPanel.getWidth(), inventoryListPanel.getHeight());
-		inventoryListPanel.removeAll();
-		inventoryListPanel.add(inventory);
+		inventory.setBounds(0, 0, inventoryListPanel.getWidth(), inventoryListPanel.getHeight());
+		inventoryListPanel.setViewportView(inventory);
 	}
 
 	
@@ -150,5 +137,21 @@ public class PartsInventoryView extends JFrame {
 	
 	public int getHeight() {
 		return GUIHeight;
+	}
+	
+	public void disableDelete() {
+		deletePart.setEnabled(false);
+	}
+	
+	public void enableDelete() {
+		deletePart.setEnabled(true);
+	}
+	
+	public void disableView() {
+		viewPart.setEnabled(false);
+	}
+	
+	public void enableView() {
+		viewPart.setEnabled(true);
 	}
 }

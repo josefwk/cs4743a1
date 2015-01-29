@@ -1,6 +1,5 @@
 package assignment1;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JButton;
@@ -10,19 +9,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class PartView extends JFrame {
-	private PartsInventoryModel model;
-	private PartsInventoryPanel panel;
 	private JPanel partFrame;
 	private JButton cancel, ok, edit, save;
 	private JLabel partName, partNumber, partVendor, partQuantity, errorMessage;
 	private JTextField nameField, numberField, vendorField, quantityField;
 	
-	public PartView(PartsInventoryModel model) {
-		super("Selected Part");
-			this.model = model;
-			panel = new PartsInventoryPanel(model, this);
-			this.add(panel, BorderLayout.CENTER);
+	public PartView(PartsInventoryModel model, String title) {
+		super(title);
+
 			this.setSize(340, 250);
 			this.setVisible(true);
 			this.setLocation(900, 250);
@@ -106,8 +102,15 @@ public class PartView extends JFrame {
 		return vendorField.getText();
 	}
 	
-	public Integer getQuantity() {
-		return Integer.parseInt(quantityField.getText());
+	public Integer getQuantity() throws NumberFormatException {
+		Integer i = 0;
+		try {
+			i = Integer.parseInt(quantityField.getText().trim());
+			return i;
+		}
+		catch (NumberFormatException nfe) {
+			throw new NumberFormatException("Error: quantity must be in the form of an integer.");
+		}
 	}
 	
 	public void setErrorMessage(String error) {
