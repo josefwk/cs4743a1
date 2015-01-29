@@ -16,7 +16,7 @@ public class PartView extends JFrame {
 	private JLabel partName, partNumber, partVendor, partQuantity, errorMessage;
 	private JTextField nameField, numberField, vendorField, quantityField;
 	
-	public PartView(PartsInventoryModel model, String title) {
+	public PartView(String title) {
 		super(title);
 
 			this.setSize(340, 250);

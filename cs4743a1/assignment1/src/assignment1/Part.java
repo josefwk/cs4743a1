@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.Comparator;
 
 public class Part implements Comparable<Part> {
-	Integer quantity = 0;
-	String partName = "";
-	String partNumber = "";
-	String vendor = "";
-	
+	private Integer quantity = 0;
+	private String partName = "";
+	private String partNumber = "";
+	private String vendor = "";
 	private static int maxPartNameLength = 255;
 	private static int maxPartNumberLength = 20;
 	private static int maxVendorLength = 255;
@@ -66,7 +65,7 @@ public class Part implements Comparable<Part> {
 		return maxVendorLength;
 	}
 	
-	void setQuantity(Integer quantity) throws IOException {
+	private void setQuantity(Integer quantity) throws IOException {
 		if (quantity < 0) {
 			throw new IOException("Error: cannot assign negative value to quantity.");
 		}
@@ -75,7 +74,7 @@ public class Part implements Comparable<Part> {
 		}
 	}
 	
-	void setPartName(String partName) throws IOException {
+	private void setPartName(String partName) throws IOException {
 		if (partName.length() > maxPartNameLength) {
 			throw new IOException("Error: part name is too long (" + maxPartNameLength + " characters max).");
 		}
@@ -87,7 +86,7 @@ public class Part implements Comparable<Part> {
 		}
 	}
 	
-	void setPartNumber(String partNumber) throws IOException {
+	private void setPartNumber(String partNumber) throws IOException {
 		if (partNumber.length() > maxPartNumberLength) {
 			throw new IOException("Error: part number is too long (" + maxPartNumberLength + " characters max).");
 		}
@@ -99,7 +98,7 @@ public class Part implements Comparable<Part> {
 		}
 	}
 	
-	void setVendor(String vendor) throws IOException {
+	private void setVendor(String vendor) throws IOException {
 		if (vendor.length() > maxVendorLength) {
 			throw new IOException("Error: vendor name is too long (" + maxVendorLength + " characters max).");
 		}

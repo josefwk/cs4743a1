@@ -40,7 +40,7 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 						partView.dispose();
 					}
 					ClearSelection();
-					partView = new PartView(partsInventoryModel, "Add New Part");
+					partView = new PartView("Add New Part");
 					partView.register(this);
 					partView.hideSaveButton();
 					partView.hideEditButton();
@@ -68,7 +68,7 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 						inventoryView.disableDelete();
 						inventoryView.disableView();
 						for (Part p : selectedParts) {
-							partView = new PartView(partsInventoryModel, "View/Edit Part: " + p.getPartName());
+							partView = new PartView("View/Edit Part: " + p.getPartName());
 							partView.register(this);
 							partView.disableEditable();
 							partView.setName(p.getPartName());
@@ -161,14 +161,14 @@ public class PartsInventoryController implements ActionListener, ListSelectionLi
 			}
 		}
 		
-		void ClearSelection() {
+		private void ClearSelection() {
 			selectedParts = null;
 			inventoryView.disableDelete();
 			inventoryView.disableView();
 		}
 		
 		// restores previous button clicked to its original color; changes color of current button clicked 
-		void ChangeButtonColors(ActionEvent e) {
+		private void ChangeButtonColors(ActionEvent e) {
 			if (lastButtonClicked != null) {
 				lastButtonClicked.setBackground(lastButtonOriginalColor);
 			}
