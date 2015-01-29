@@ -2,6 +2,13 @@ package assignment1;
 
 import java.io.IOException;
 
+/*
+ * 
+ * CS 4743 assignment 1
+ * Written by Josef Klein and Ryan Roseman
+ * 
+ */
+
 public class Tester {
 	private static PartsInventoryView partsInventoryView;
 	private static PartsInventoryController partsInventoryController;
